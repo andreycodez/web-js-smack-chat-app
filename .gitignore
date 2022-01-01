@@ -25,3 +25,5 @@ yarn-error.log*
 
 # Inteliji
 /.idea
+/package-lock.json
+/yarn.lock
