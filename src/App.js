@@ -5,6 +5,9 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import ChatApp from './components/ChatApp/ChatApp';
+import UserCreate from './components/UserCreate/UserCreate';
+import UserLogin from './components/UserLogin/UserLogin';
 
 function App() {
   return (
