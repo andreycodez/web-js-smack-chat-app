@@ -1,5 +1,6 @@
 import React from "react";
 import './Modal.css';
+import PropTypes from "prop-types";
 
 const Modal = ( { children, title, close, isOpen } ) => (
     <>
@@ -20,5 +21,17 @@ const Modal = ( { children, title, close, isOpen } ) => (
       ) : null}
     </>
 );
+
+Modal.propTypes = {
+    title: PropTypes.string,
+    close: PropTypes.func,
+    isOpen: PropTypes.bool,
+}
+
+Modal.defaultProps = {
+    title: 'Title',
+    close: () => {},
+    isOpen: false,
+}
 
 export default Modal;
