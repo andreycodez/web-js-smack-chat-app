@@ -21,3 +21,18 @@
     color: var(--sky-tint);
     cursor: pointer;
 }
+
+.avatar-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.avatar-list .avatar-icon {
+    transition: ease-in-out 0.1s;
+    opacity: 0.8;
+}
+
+.avatar-list .avatar-icon:hover {
+    cursor: pointer;
+    opacity: 1;
+}

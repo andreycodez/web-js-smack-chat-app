@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import './UserCreate.css';
 import Modal from "../Modal/Modal";
+import {AVATARS} from "../../constants";
 
 const UserCreate = () => {
   return(
@@ -23,11 +24,24 @@ const UserCreate = () => {
             <Link to="/login">Here</Link>
           </div>
         </div>
+
         <Modal title="Choose Avatar" isOpen={true}>
-          <div>This is a modal</div>
+          <div className="avatar-list">
+            {AVATARS.map((img) => (
+                <div key={img} className="avatar-icon">
+                  <img src={img} alt="avatar"/>
+                </div>
+            ))}
+
+            {/*{Array.from({ length: 28 }, (v, i) => (*/}
+            {/*    <div key={v} className="avatar-icon">*/}
+            {/*      <img src={`/dark${i}.png`} alt="avatar"/>*/}
+            {/*    </div>*/}
+            {/*))}*/}
+
+          </div>
         </Modal>
       </>
-
   )
 }
 
