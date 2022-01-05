@@ -9,11 +9,14 @@ import {
 import ChatApp from "./components/ChatApp/ChatApp";
 import UserLogin from "./components/UserLogin/UserLogin";
 import UserCreate from "./components/UserCreate/UserCreate";
+import { AuthService } from "./services";
+
+const authService = new AuthService();
 
 export const UserContext = createContext();
 const AuthProvider = ({ children }) => {
   const context = {
-    // authService
+    authService,
     // messageService
     appSelectedChannel: {},
     appSetChannel: (ch) => {
@@ -32,9 +35,9 @@ const AuthProvider = ({ children }) => {
 }
 
 const PrivateRoute = ({ children, ...props }) => {
-  const isLoggedIn = false;
+  const context = useContext(UserContext);
   return (
-      <Route {...props} render={({ location }) => isLoggedIn
+      <Route {...props} render={({ location }) => context.authService.isLoggedIn
         ? (children)
         : (<Redirect to={{ pathname: '/login', state: { from: location }}} />)
       }
