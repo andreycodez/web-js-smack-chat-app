@@ -34,7 +34,7 @@ class User {
     this.email = '';
     this.avatarname = '';
     this.avatarColor = '';
-    this.isLogedIn = false;
+    this.isLoggedIn = false;
   }
 }
 
@@ -55,7 +55,7 @@ export class AuthService extends User {
   }
 
   setIsLoggedIn(loggedIn) {
-    this.isLogedIn = loggedIn;
+    this.isLoggedIn = loggedIn;
   }
 
   setBearerHeader(token) {
@@ -80,6 +80,7 @@ export class AuthService extends User {
       await this.findUserByEmail();
     } catch(error) {
       console.log(error);
+      throw(error);
     }
   }
 
