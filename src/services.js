@@ -4,7 +4,8 @@ const URL_ACCOUNT = `${BASE_URL}/account`;
 const URL_LOGIN = `${URL_ACCOUNT}/login`;
 const URL_REGISTER = `${URL_ACCOUNT}/register`;
 const URL_USER = `${BASE_URL}/user`;
-const URL_USER_BY_EMAIL = `${URL_USER}/byEmail/`
+const URL_USER_BY_EMAIL = `${URL_USER}/byEmail/`;
+const URL_USER_ADD = `${URL_USER}/add`;
 
 
 const headers = { 'Content-Type': 'application/json' };
@@ -67,6 +68,33 @@ export class AuthService extends User {
 
   getBearerHeader() {
     return this.bearerHeader;
+  }
+
+  async registerUser(email, password) {
+    const body = { 'email': email.toLowerCase(), 'password': password }
+    try {
+      await axios.post(URL_REGISTER, body);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  async createUser(name, email, avatarName, avatarColor) {
+    const headers = this.getBearerHeader();
+    const body = {
+      'name': name,
+      'email': email,
+      'avatarName': avatarName,
+      'avatarColor': avatarColor
+    }
+    try {
+      const response = await axios.post(URL_USER_ADD, body, {headers});
+      this.setUserData(response.data);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   async loginUser(email, password) {
