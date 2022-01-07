@@ -20,6 +20,7 @@ const UserCreate = ({ history }) => {
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState('dark')
 
   const onChange = ({ target: {name, value}}) => {
     setUserInfo( { ...userInfo, [name]: value } )
@@ -33,6 +34,10 @@ const UserCreate = ({ history }) => {
   const generateBgColor = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
     setUserInfo({...userInfo, avatarColor: `#${randomColor}`});
+  }
+
+  const chooseAvatarTheme = (v) => {
+    setTheme(v);
   }
 
   const createUser = (e) => {
@@ -109,6 +114,10 @@ const UserCreate = ({ history }) => {
         </div>
 
         <Modal title="Choose Avatar" isOpen={modal} close={() => setModal(false)}>
+          <div className="toggleLayer">
+            <div className={`toggle active`} >Dark</div>
+            <div className="toggle">Light</div>
+          </div>
           <div className="avatar-list">
             {AVATARS.map((img) => (
                 <div role="presentation" key={img} className="avatar-icon" onClick={() => chooseAvatar(img)}>
