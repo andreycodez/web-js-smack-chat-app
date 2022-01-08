@@ -1,0 +1,43 @@
+.chat-app {
+
+}
+
+.chat-app nav {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background: var(--primary-nav);
+    padding: 0 20px;
+    position: relative;
+}
+
+nav h1 {
+    color: white;
+    margin: auto;
+}
+
+.user-avatar {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-avatar div {
+    color: var(--lunar);
+    font-weight: 600;
+}
+
+.user-avatar img {
+    max-width: 45px;
+    width: 100%;
+    margin-right: 10px;
+    border-radius: 50%;
+    transitionm: ease-in-out .3s;
+}
+
+.user-avatar:hover img {
+    opacity: .8;
+}
+
