@@ -15,7 +15,7 @@ class User {
     this.id = '';
     this.name = '';
     this.email = '';
-    this.avatarname = '';
+    this.avatarName = '';
     this.avatarColor = '';
     this.isLogedIn = false;
   }
@@ -25,7 +25,7 @@ class User {
     this.id = _id;
     this.name = name;
     this.email = email;
-    this.avatarname = avatarName;
+    this.avatarName = avatarName;
     this.avatarColor = avatarColor;
   }
 
@@ -33,7 +33,7 @@ class User {
     this.id = '';
     this.name = '';
     this.email = '';
-    this.avatarname = '';
+    this.avatarName = '';
     this.avatarColor = '';
     this.isLoggedIn = false;
   }

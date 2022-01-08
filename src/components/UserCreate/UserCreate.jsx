@@ -113,7 +113,7 @@ const UserCreate = ({ history }) => {
           </div>
         </div>
 
-        <Modal title="Choose Avatar" isOpen={modal} close={() => setModal(false)}>
+        <Modal theme={theme} title="Choose Avatar" isOpen={modal} close={() => setModal(false)}>
           <div className="toggleLayer">
             {Object.keys(AVATARS).map((themeName) => (
                 <div
