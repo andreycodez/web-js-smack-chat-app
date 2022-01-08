@@ -115,11 +115,14 @@ const UserCreate = ({ history }) => {
 
         <Modal title="Choose Avatar" isOpen={modal} close={() => setModal(false)}>
           <div className="toggleLayer">
-            <div className={`toggle active`} >Dark</div>
-            <div className="toggle">Light</div>
+            {Object.keys(AVATARS).map((themeName) => (
+                <div
+                    className={'toggle' + (themeName === theme ? ' active' : '')}
+                    onClick={() => setTheme(themeName)}>{themeName.charAt(0).toUpperCase() + themeName.slice(1)}</div>
+            ))}
           </div>
           <div className="avatar-list">
-            {AVATARS.map((img) => (
+            {AVATARS[`${theme}`].map((img) => (
                 <div role="presentation" key={img} className="avatar-icon" onClick={() => chooseAvatar(img)}>
                   <img src={img} alt="avatar"/>
                 </div>
