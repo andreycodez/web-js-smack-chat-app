@@ -29,15 +29,11 @@ nav h1 {
     font-weight: 600;
 }
 
-.user-avatar img {
-    max-width: 45px;
-    width: 100%;
+.nav-avatar {
     margin-right: 10px;
-    border-radius: 50%;
-    transitionm: ease-in-out .3s;
 }
 
-.user-avatar:hover img {
+.user-avatar:hover .nav-avatar {
     opacity: .8;
 }
 

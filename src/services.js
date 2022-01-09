@@ -15,7 +15,7 @@ class User {
     this.id = '';
     this.name = '';
     this.email = '';
-    this.avatarName = '';
+    this.avatarName = 'avatarDefault.png';
     this.avatarColor = '';
     this.isLogedIn = false;
   }

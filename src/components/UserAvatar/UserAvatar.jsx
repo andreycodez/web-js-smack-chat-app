@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import { UserContext } from "../../App";
 import './UserAvatar.css';
 
-const UserAvatar = ({ className, size = 'lg' } ) => {
+const UserAvatar = ({ avatar, className, size = 'lg' } ) => {
   const { authService } = useContext(UserContext);
+  const { avatarName, avatarColor } = avatar;
   return (
       <img
           className={`avatar-icon ${className} ${size}`}
-          style={{backgroundColor: authService.avatarColor}}
-          src={authService.avatarName}
+          style={{backgroundColor: avatarColor || authService.avatarColor}}
+          src={avatarName || authService.avatarName}
           alt="avatar"/>
   )
 }
@@ -17,11 +18,13 @@ const UserAvatar = ({ className, size = 'lg' } ) => {
 UserAvatar.propTypes = {
   className: PropTypes.string,
   size: PropTypes.string,
+  avatar: PropTypes.object,
 }
 
 UserAvatar.defaultProps = {
   className: '',
   size: 'lg',
+  avatar: {},
 }
 
 export default UserAvatar;

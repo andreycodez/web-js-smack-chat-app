@@ -1,6 +1,7 @@
 import React, {useContext} from "react";
 import {UserContext} from "../../App";
 import './ChatApp.css';
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const ChatApp = () => {
   const { authService } = useContext(UserContext);
@@ -9,10 +10,7 @@ const ChatApp = () => {
         <nav>
           <h1>Smack Chat</h1>
           <div className="user-avatar">
-            <img
-                style={{backgroundColor: authService.avatarColor}}
-                src={authService.avatarName}
-                alt="avatar"/>
+            <UserAvatar className="nav-avatar" size="sm" />
             <div>{authService.name}</div>
           </div>
         </nav>

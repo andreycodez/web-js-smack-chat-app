@@ -6,6 +6,7 @@ import {AVATARS} from "../../constants";
 import {UserContext} from "../../App";
 import {logDOM} from "@testing-library/react";
 import Alert from "../Alert/Alert";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const UserCreate = ({ history }) => {
   const { authService } = useContext(UserContext);
@@ -101,7 +102,7 @@ const UserCreate = ({ history }) => {
                 name="password"
                 placeholder="enter password"/>
             <div className="avatar-container">
-              <img style={{ backgroundColor: avatarColor }} className="avatar-icon avatar-b-radius" src={avatarName} alt="avatar"/>
+              <UserAvatar avatar={{ avatarName, avatarColor }} className="create-avatar" />
               <div className="avatar-text" onClick={() => setModal(true)}>Choose Avatar</div>
               <div className="avatar-text" onClick={generateBgColor}>Generate background color</div>
             </div>
@@ -123,7 +124,7 @@ const UserCreate = ({ history }) => {
           </div>
           <div className="avatar-list">
             {AVATARS[`${theme}`].map((img) => (
-                <div role="presentation" key={img} className="avatar-icon" onClick={() => chooseAvatar(img)}>
+                <div role="presentation" key={img} className="create-avatar" onClick={() => chooseAvatar(img)}>
                   <img src={img} alt="avatar"/>
                 </div>
             ))}
