@@ -26,6 +26,7 @@ const Channels = () => {
 
   const createChannel = (e) => {
     e.preventDefault();
+    chatService.addChannel(newChannel);
     setNewChannel(INIT);
     setModal(false);
   }

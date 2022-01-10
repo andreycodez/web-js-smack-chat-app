@@ -130,7 +130,11 @@ export class ChatService {
   constructor(authHeader) {
     this.getAuthHeader = authHeader;
     this.channels = [];
+    this.selectedChannel = {};
   }
+
+  addChannel = (channel) => this.channels.push(channel);
+  setSelectedChannel = (channel) => this.selectedChannel = channel;
 
   async findAllChannels() {
     const headers = this.getAuthHeader();
@@ -148,4 +152,5 @@ export class ChatService {
       throw e;
     }
   }
+
 }
