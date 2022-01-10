@@ -5,6 +5,11 @@
     padding: 10px;
 }
 
+.form.channel-form {
+    margin: auto;
+    box-shadow: none;
+}
+
 .channel-header {
     border-bottom: 1px solid rgba(200, 187, 200, .3);
     text-align: center;
@@ -21,6 +26,16 @@
     color: var(--cloudy);
 }
 
+.channel-label .inner.selected {
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+.channel-label .inner.selected,
+.channel-label .inner.selected:hover {
+    background: #0f79d7;
+}
+
 .channel-label .inner:hover {
     background: var(--primary-nav);
     cursor: pointer;
@@ -35,3 +50,4 @@
 .channel-list {
     padding: 20px 0;
 }
+
