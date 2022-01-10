@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../App";
 import './Channels.css';
 
 const Channels = () => {
-  const channelList = ['channel1', 'channel2', 'channel3'];
-  const [channels, setChannels] = useState(channelList);
+  const [channels, setChannels] = useState([]);
+  const { chatService } = useContext(UserContext);
+
+  useEffect(() => {
+    chatService.findAllChannels().then((res) => {
+      setChannels(res);
+    })
+  }, []);
+
+
   return (
       <div className="channel">
         <div className="channel-header">
@@ -11,11 +20,11 @@ const Channels = () => {
         </div>
         <h3 className="channel-label">Channels <span>Add +</span></h3>
         <div className="channel-list">
-          {channels.map((channel) => (
+          {!!channels.length ? channels.map((channel) => (
               <div className="channel-label">
-                <div className="inner">#{channel}</div>
+                <div className="inner">#{channel.name}</div>
               </div>
-          ))}
+          )) : <div>No channels, please add a channel</div>  }
         </div>
       </div>
   )

@@ -9,15 +9,16 @@ import {
 import ChatApp from "./components/ChatApp/ChatApp";
 import UserLogin from "./components/UserLogin/UserLogin";
 import UserCreate from "./components/UserCreate/UserCreate";
-import { AuthService } from "./services";
+import { AuthService, ChatService } from "./services";
 
 const authService = new AuthService();
+const chatService = new ChatService(authService.getBearerHeader());
 
 export const UserContext = createContext();
 const AuthProvider = ({ children }) => {
   const context = {
     authService,
-    // messageService
+    chatService,
     appSelectedChannel: {},
     appSetChannel: (ch) => {
       setAuthContext({...authContext, appSelectedChannel: ch});

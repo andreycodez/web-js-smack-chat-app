@@ -6,6 +6,7 @@ const URL_REGISTER = `${URL_ACCOUNT}/register`;
 const URL_USER = `${BASE_URL}/user`;
 const URL_USER_BY_EMAIL = `${URL_USER}/byEmail/`;
 const URL_USER_ADD = `${URL_USER}/add`;
+const URL_GET_CHANNELS = `${BASE_URL}/channels`;
 
 
 const headers = { 'Content-Type': 'application/json' };
@@ -121,6 +122,30 @@ export class AuthService extends User {
       this.setUserData(response.data);
     } catch (e) {
       console.log(e)
+    }
+  }
+}
+
+export class ChatService {
+  constructor(authHeader) {
+    this.getAuthHeader = authHeader;
+    this.channels = [];
+  }
+
+  async findAllChannels() {
+    const headers = this.getAuthHeader();
+    try {
+      let response = await axios.get(URL_GET_CHANNELS, { headers });
+      response = response.data.map((channel) => ({
+        name: channel.name,
+        description: channel.description,
+        id: channel._id,
+      }));
+      this.channels = [...response];
+      return response;
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   }
 }
