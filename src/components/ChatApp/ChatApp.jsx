@@ -4,6 +4,7 @@ import './ChatApp.css';
 import UserAvatar from "../UserAvatar/UserAvatar";
 import Modal from "../Modal/Modal";
 import { useHistory } from "react-router-dom";
+import Channels from "../Channels/Channels";
 
 const ChatApp = () => {
   const { authService } = useContext(UserContext);
@@ -23,6 +24,9 @@ const ChatApp = () => {
             <div>{authService.name}</div>
           </div>
         </nav>
+        <div className="smack-app">
+          <Channels />
+        </div>
         <Modal title="Profile" isOpen={modal} close={() => setModal(false)}>
           <div className="profile">
             <UserAvatar />

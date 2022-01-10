@@ -46,3 +46,8 @@ nav h1 {
     line-height: 2;
 }
 
+.smack-app {
+    display: flex;
+    height: 100vh;
+}
+
