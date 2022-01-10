@@ -28,20 +28,22 @@ class User {
     this.avatarName = avatarName;
     this.avatarColor = avatarColor;
   }
-
-  logoutUser() {
-    this.id = '';
-    this.name = '';
-    this.email = '';
-    this.avatarName = '';
-    this.avatarColor = '';
-    this.isLoggedIn = false;
-  }
 }
 
 export class AuthService extends User {
   constructor() {
     super();
+    this.authToken = '';
+    this.bearerHeader = {};
+  }
+
+  logoutUser() {
+    this.id = '';
+    this.name = '';
+    this.email = '';
+    this.avatarName = 'avatarDefault.png';
+    this.avatarColor = '';
+    this.isLoggedIn = false;
     this.authToken = '';
     this.bearerHeader = {};
   }
