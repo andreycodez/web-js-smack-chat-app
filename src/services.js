@@ -168,8 +168,8 @@ export class SocketService {
     this.socket.disconnect();
   }
 
-  addChannel(name, decroption) {
-    this.socket.emit('newChannel', name. description);
+  addChannel(name, description) {
+    this.socket.emit('newChannel', name, description);
   }
 
 }
