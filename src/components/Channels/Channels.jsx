@@ -8,7 +8,7 @@ const Channels = () => {
   const [channels, setChannels] = useState([]);
   const [newChannel, setNewChannel] = useState(INIT);
   const [modal, setModal] = useState(false);
-  const { authService, chatService, appSetChannel, appSelectedChannel } = useContext(UserContext);
+  const { authService, chatService, socketService, appSetChannel, appSelectedChannel } = useContext(UserContext);
 
   useEffect(() => {
     chatService.findAllChannels().then((res) => {
@@ -26,7 +26,7 @@ const Channels = () => {
 
   const createChannel = (e) => {
     e.preventDefault();
-    chatService.addChannel(newChannel);
+    socketService.addChannel(newChannel.name, newChannel.description);
     setNewChannel(INIT);
     setModal(false);
   }

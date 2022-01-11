@@ -1,4 +1,5 @@
 import axios from "axios";
+import io from 'socket.io-client';
 const BASE_URL = 'http://localhost:3005/v1';
 const URL_ACCOUNT = `${BASE_URL}/account`;
 const URL_LOGIN = `${URL_ACCOUNT}/login`;
@@ -6,7 +7,7 @@ const URL_REGISTER = `${URL_ACCOUNT}/register`;
 const URL_USER = `${BASE_URL}/user`;
 const URL_USER_BY_EMAIL = `${URL_USER}/byEmail/`;
 const URL_USER_ADD = `${URL_USER}/add`;
-const URL_GET_CHANNELS = `${BASE_URL}/channels`;
+const URL_GET_CHANNELS = `${BASE_URL}/channel`;
 
 
 const headers = { 'Content-Type': 'application/json' };
@@ -151,6 +152,24 @@ export class ChatService {
       console.log(e);
       throw e;
     }
+  }
+}
+
+export class SocketService {
+  socket = io('http://localhost:3005/')
+
+  establishConnection() {
+    console.log('client connected');
+    this.socket.connect();
+  }
+
+  closeConnection() {
+    console.log('client disconnected');
+    this.socket.disconnect();
+  }
+
+  addChannel(name, decroption) {
+    this.socket.emit('newChannel', name. description);
   }
 
 }

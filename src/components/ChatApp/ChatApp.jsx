@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useEffect, useState, useContext} from "react";
 import {UserContext} from "../../App";
 import './ChatApp.css';
 import UserAvatar from "../UserAvatar/UserAvatar";
@@ -7,9 +7,15 @@ import { useHistory } from "react-router-dom";
 import Channels from "../Channels/Channels";
 
 const ChatApp = () => {
-  const { authService } = useContext(UserContext);
+  const { authService, socketService } = useContext(UserContext);
   const history = useHistory();
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    socketService.establishConnection();
+    return () => socketService.closeConnection();
+  }, [])
+
   const logoutUser = () => {
     authService.logoutUser();
     setModal(false);
