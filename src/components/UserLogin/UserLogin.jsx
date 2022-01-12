@@ -14,7 +14,7 @@ const UserLogin = ({location, history}) => {
   const onLoginUser = (e) => {
     e.preventDefault();
     const { email, password } = userLogins;
-    if (!!email & !!password) {
+    if (!!email && !!password) {
       const { from } = location.state || { from: {pathname: '/'} }
       authService.loginUser(email, password)
           .then(() => history.replace(from))
@@ -33,7 +33,7 @@ const UserLogin = ({location, history}) => {
         <form className="form" onSubmit={onLoginUser}>
           <label htmlFor="credentials">Enter you <strong>email address</strong> and <strong>password</strong></label>
           <input
-              id="credentials"
+              id="name"
               onChange={onChange}
               value={userLogins.email}
               type="email"
@@ -42,7 +42,7 @@ const UserLogin = ({location, history}) => {
               placeholder="elonmask@tesla.com"
           />
           <input
-              id="credentials"
+              id="password"
               onChange={onChange}
               value={userLogins.password}
               type="password"
