@@ -42,7 +42,7 @@ const Channels = () => {
             {!!channels.length ? channels.map((channel) => (
                 <div
                     key={channel.id}
-                    onClick={selectChannel(channel)}
+                    onClick={() => {selectChannel(channel)}}
                     className="channel-label"
                 >
                   <div className={`inner ${appSelectedChannel.id === channel.id ? 'selected' : ''}`}>#{channel.name}</div>
