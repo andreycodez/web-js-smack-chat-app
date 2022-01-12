@@ -48,7 +48,6 @@ const PrivateRoute = ({ children, ...props }) => {
   )
 }
 
-
 function App() {
   return (
       <AuthProvider>
