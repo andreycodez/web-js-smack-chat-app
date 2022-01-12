@@ -14,7 +14,7 @@ const ChatApp = () => {
   useEffect(() => {
     socketService.establishConnection();
     return () => socketService.closeConnection();
-  }, [])
+  }, []);
 
   const logoutUser = () => {
     authService.logoutUser();
