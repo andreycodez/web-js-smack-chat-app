@@ -141,6 +141,7 @@ export class ChatService {
 
   addChannel = (channel) => this.channels.push(channel);
   setSelectedChannel = (channel) => this.selectedChannel = channel;
+  getAllChannels = () => this.channels;
 
   async findAllChannels() {
     //const headers = this.getAuthHeader();
@@ -169,6 +170,10 @@ export class ChatService {
 
 export class SocketService {
   socket = io('http://localhost:3005/')
+  constructor(socketAddChannel, getChannelList) {
+    this.socketAddChannel = socketAddChannel;
+    this.getChannelList = getChannelList;
+  }
 
   establishConnection() {
     console.log('client connected');
@@ -182,6 +187,15 @@ export class SocketService {
 
   addChannel(name, description) {
     this.socket.emit('newChannel', name, description);
+  }
+
+  getChannel(cb) {
+    this.socket.on('channelCreated', (name, description, id) => {
+      const channel = { name, description, id };
+      this.socketAddChannel(channel);
+      const channelList = this.getChannelList();
+      cb(channelList);
+    })
   }
 
 }

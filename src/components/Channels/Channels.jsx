@@ -16,6 +16,12 @@ const Channels = () => {
     })
   }, []);
 
+  useEffect(() => {
+    socketService.getChannel((channelList) => {
+      setChannels(channelList);
+    })
+  }, [])
+
   const selectChannel = (channel) => {
     appSetChannel(channel);
   }
