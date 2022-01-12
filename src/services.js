@@ -132,15 +132,26 @@ export class ChatService {
     this.getAuthHeader = authHeader;
     this.channels = [];
     this.selectedChannel = {};
+    // this.headers = {};
   }
+  //
+  // logOutHeaders = () => {
+  //   this.headers = this.getAuthHeader;
+  // }
 
   addChannel = (channel) => this.channels.push(channel);
   setSelectedChannel = (channel) => this.selectedChannel = channel;
 
   async findAllChannels() {
-    const headers = this.getAuthHeader();
+    //const headers = this.getAuthHeader();
     try {
-      let response = await axios.get(URL_GET_CHANNELS, { headers });
+      let response = await axios.get(URL_GET_CHANNELS, {
+        // headers
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZDkzNDM1ZDVlYjMyOTA1ZTM3N2Y2MCIsImlhdCI6MTY0MTkxNzU5MiwiZXhwIjoxNjQ5NjkzNTkyfQ.aXd_nvSyu9bamBDhxSCC7wn7F2dK-85cRg0iF8izVls`,
+        }
+      });
       response = response.data.map((channel) => ({
         name: channel.name,
         description: channel.description,
@@ -149,7 +160,8 @@ export class ChatService {
       this.channels = [...response];
       return response;
     } catch (e) {
-      console.log(e);
+      // this.logOutHeaders();
+      console.error(e);
       throw e;
     }
   }
