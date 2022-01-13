@@ -13,6 +13,7 @@ const Channels = () => {
   useEffect(() => {
     chatService.findAllChannels().then((res) => {
       setChannels(res);
+      appSetChannel(res[0]);
     })
   }, []);
 
