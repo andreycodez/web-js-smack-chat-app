@@ -5,6 +5,7 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 import Modal from "../Modal/Modal";
 import { useHistory } from "react-router-dom";
 import Channels from "../Channels/Channels";
+import Chats from "../Chats/Chats";
 
 const ChatApp = () => {
   const { authService, socketService } = useContext(UserContext);
@@ -32,6 +33,7 @@ const ChatApp = () => {
         </nav>
         <div className="smack-app">
           <Channels />
+          <Chats />
         </div>
         <Modal title="Profile" isOpen={modal} close={() => setModal(false)}>
           <div className="profile">
