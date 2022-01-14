@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {UserContext} from "../../App";
 
 
@@ -7,7 +7,13 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 
 const Chats = () => {
 
-  const { appSelectedChannel } = useContext(UserContext);
+  const { authService, chatService, appSelectedChannel } = useContext(UserContext);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    chatService.findAllMessagesForChannel(appSelectedChannel.id, authService.getBearerHeader())
+        .then((res) => { setMessages(res)});
+  }, [appSelectedChannel]);
 
   return (
       <div className="chat">
@@ -16,17 +22,24 @@ const Chats = () => {
           <h4>{appSelectedChannel.description}</h4>
         </div>
         <div className="chat-list">
+          {!!messages.length
+              ? messages.map((msg) => (
+                  <div className="chat-message">
+                    <UserAvatar avatar={{avatarName: msg.userAvatar, avatarColor: msg.userAvatarColor}} size="md"/>
+                    <div className="chat-user">
+                      <strong>{msg.userName}</strong>
+                      <small>{msg.timestamp}</small>
+                      <div className="message-body">
+                        {msg.messageBody}
+                      </div>
+                    </div>
+                  </div>
+              ))
+              : <div>No messages</div>
 
-          <div className="chat-message">
-            <UserAvatar size="md"/>
-            <div className="chat-user">
-              <strong>User Name</strong>
-              <small>Some date</small>
-              <div className="message-body">
-                Some cool message
-              </div>
-            </div>
-          </div>
+          }
+
+
           <form className="chat-bar">
             <div className="typing">User is typing...</div>
             <div className="chat-wrapper">
