@@ -11,8 +11,10 @@ const Chats = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    chatService.findAllMessagesForChannel(appSelectedChannel.id, authService.getBearerHeader())
-        .then((res) => { setMessages(res)});
+    if (appSelectedChannel.id) {
+      chatService.findAllMessagesForChannel(appSelectedChannel.id, authService.getBearerHeader())
+          .then((res) => { setMessages(res)});
+    }
   }, [appSelectedChannel]);
 
   return (
@@ -24,7 +26,7 @@ const Chats = () => {
         <div className="chat-list">
           {!!messages.length
               ? messages.map((msg) => (
-                  <div className="chat-message">
+                  <div key={msg.id} className="chat-message">
                     <UserAvatar avatar={{avatarName: msg.userAvatar, avatarColor: msg.userAvatarColor}} size="md"/>
                     <div className="chat-user">
                       <strong>{msg.userName}</strong>
