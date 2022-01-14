@@ -8,6 +8,7 @@ const URL_USER = `${BASE_URL}/user`;
 const URL_USER_BY_EMAIL = `${URL_USER}/byEmail/`;
 const URL_USER_ADD = `${URL_USER}/add`;
 const URL_GET_CHANNELS = `${BASE_URL}/channel`;
+const URL_GET_MESSAGES = `${BASE_URL}/message/byChannel/`;
 
 
 const headers = { 'Content-Type': 'application/json' };
@@ -166,6 +167,29 @@ export class ChatService {
       throw e;
     }
   }
+
+  async findAllMessagesForChannel (channelId, headers ) {
+    //const headers = this.getAuthHeader();
+    try {
+      let response = await axios.get(URL_GET_MESSAGES + channelId, { headers });
+      response = response.data.map((msg) => ({
+        messageBody: msg.messageBody,
+        channelId: msg.channelId,
+        id: msg._id,
+        userName: msg.userName,
+        userAvatar: msg.userAvatar,
+        userAvatarColor: msg.avatarColor,
+        timeStamp: msg.timeStamp,
+      }));
+      this.messages = response;
+      return response;
+    } catch (e) {
+      console.error(e);
+      this.messages = [];
+      throw e;
+    }
+  }
+
 }
 
 export class SocketService {
