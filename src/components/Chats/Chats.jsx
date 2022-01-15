@@ -7,8 +7,9 @@ import UserAvatar from "../UserAvatar/UserAvatar";
 
 const Chats = () => {
 
-  const { authService, chatService, appSelectedChannel } = useContext(UserContext);
+  const { authService, chatService, appSelectedChannel, socketService } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
+  const [messageBody, setMessageBody] = useState('');
 
   useEffect(() => {
     if (appSelectedChannel.id) {
@@ -16,6 +17,23 @@ const Chats = () => {
           .then((res) => { setMessages(res)});
     }
   }, [appSelectedChannel]);
+
+  const onTyping = ({target: { value }}) => {
+    setMessageBody(value);
+  }
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    const { name, id, avatarName, avatarColor } = authService;
+    const user = {
+      userName: name,
+      userId: id,
+      userAvatar: avatarName,
+      userAvatarColor: avatarColor,
+    }
+    socketService.addMessage(messageBody, appSelectedChannel.id, user);
+    setMessageBody('');
+  }
 
   return (
       <div className="chat">
@@ -42,11 +60,12 @@ const Chats = () => {
           }
 
 
-          <form className="chat-bar">
+          <form onSubmit={sendMessage} className="chat-bar">
             <div className="typing">User is typing...</div>
             <div className="chat-wrapper">
               <textarea
-                value="Hello"
+                onChange={onTyping}
+                value={messageBody}
                 placeholder="Type your message..."
               />
               <input type="submit" className="submit-btn" value="Send" />
