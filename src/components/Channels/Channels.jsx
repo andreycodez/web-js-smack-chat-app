@@ -2,13 +2,19 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../App";
 import './Channels.css';
 import Modal from "../Modal/Modal";
+import { toCamelCase } from "../../helpers/cammelCase";
 
-const Channels = () => {
+const Channels = ({ unread }) => {
   const INIT = {name: '', description: ''}
   const [channels, setChannels] = useState([]);
   const [newChannel, setNewChannel] = useState(INIT);
   const [modal, setModal] = useState(false);
+  const [unreadChannels, setUnreadChannels] = useState([]);
   const { authService, chatService, socketService, appSetChannel, appSelectedChannel } = useContext(UserContext);
+
+  useEffect(() => {
+    setUnreadChannels(unread);
+  }, [unread]);
 
   useEffect(() => {
     chatService.findAllChannels().then((res) => {
@@ -25,6 +31,8 @@ const Channels = () => {
 
   const selectChannel = (channel) => {
     appSetChannel(channel);
+    const unread = chatService.setUnreadChannels(channel);
+    setUnreadChannels(unread);
   }
 
   const onChange = ({ target: { name, value }}) => {
@@ -33,7 +41,8 @@ const Channels = () => {
 
   const createChannel = (e) => {
     e.preventDefault();
-    socketService.addChannel(newChannel.name, newChannel.description);
+    const camelChannel = toCamelCase(newChannel.name)
+    socketService.addChannel(camelChannel, newChannel.description);
     setNewChannel(INIT);
     setModal(false);
   }
@@ -50,7 +59,7 @@ const Channels = () => {
                 <div
                     key={channel.id}
                     onClick={() => {selectChannel(channel)}}
-                    className="channel-label"
+                    className={`channel-label ${unreadChannels.includes(channel.id) ? 'unread' : ''}`}
                 >
                   <div className={`inner ${appSelectedChannel.id === channel.id ? 'selected' : ''}`}>#{channel.name}</div>
                 </div>
