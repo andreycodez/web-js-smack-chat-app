@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from "../../App";
+import { formatDate } from "../../helpers/dateFormat";
 
 
 import './Chats.css';
 import UserAvatar from "../UserAvatar/UserAvatar";
 
-const Chats = () => {
+const Chats = ({ chats }) => {
 
   const { authService, chatService, appSelectedChannel, socketService } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
@@ -14,17 +15,15 @@ const Chats = () => {
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
+    setMessages(chats);
+  }, [chats]);
+
+  useEffect(() => {
     if (appSelectedChannel.id) {
       chatService.findAllMessagesForChannel(appSelectedChannel.id)
           .then((res) => { setMessages(res)});
     }
   }, [appSelectedChannel]);
-
-  useEffect(() => {
-    socketService.getChatMessage(() => {
-      setMessages([...chatService.messages]);
-    })
-  }, []);
 
   useEffect(() => {
     socketService.getUserTyping((users) => {
@@ -85,7 +84,7 @@ const Chats = () => {
                     <UserAvatar avatar={{avatarName: msg.userAvatar, avatarColor: msg.userAvatarColor}} size="md"/>
                     <div className="chat-user">
                       <strong>{msg.userName}</strong>
-                      <small>{msg.timestamp}</small>
+                      <small>{formatDate(msg.timeStamp)}</small>
                       <div className="message-body">
                         {msg.messageBody}
                       </div>
