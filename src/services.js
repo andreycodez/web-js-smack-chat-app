@@ -193,11 +193,8 @@ export class ChatService {
 
 export class SocketService {
   socket = io('http://localhost:3005/')
-  constructor(ssAddChannel, ssGetChannels, ssAddMessage, ssGetSelectedChannel) {
-    this.ssAddChannel = ssAddChannel;
-    this.ssGetChannels = ssGetChannels;
-    this.ssAddMessage = ssAddMessage;
-    this.ssGetSelectedChannel = ssGetSelectedChannel;
+  constructor(chatService) {
+    this.chatService = chatService;
   }
 
   establishConnection() {
@@ -217,8 +214,8 @@ export class SocketService {
   getChannel(cb) {
     this.socket.on('channelCreated', (name, description, id) => {
       const channel = { name, description, id };
-      this.ssAddChannel(channel);
-      const channelList = this.ssGetChannels();
+      this.chatService.addChannel(channel);
+      const channelList = this.chatService.getAllChannels();
       cb(channelList);
     })
   }
@@ -232,10 +229,10 @@ export class SocketService {
 
   getChatMessage(cb) {
     this.socket.on('messageCreated', (messageBody, userId, channelId, userName, userAvatar, userAvatarColor, id, timeStamp) => {
-      const channel = this.ssGetSelectedChannel();
+      const channel = this.chatService.getSelectedChannel();
       if (channelId === channel.id) {
         const chat = { messageBody, userId, userName, userAvatar, userAvatarColor, id, timeStamp };
-        this.ssAddMessage(chat);
+        this.chatService.addMessage(chat);
         cb();
       }
     })
