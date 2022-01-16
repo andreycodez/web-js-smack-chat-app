@@ -130,13 +130,15 @@ export class AuthService extends User {
 
 export class ChatService {
   constructor(authHeader) {
-    // this.getAuthHeader = authHeader;
+    this.getAuthHeader = authHeader;
     this.channels = [];
     this.selectedChannel = {};
     this.headers = {
       'Content-Type': 'application/json',
       'Authorization': `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZDkzNDM1ZDVlYjMyOTA1ZTM3N2Y2MCIsImlhdCI6MTY0MTkxNzU5MiwiZXhwIjoxNjQ5NjkzNTkyfQ.aXd_nvSyu9bamBDhxSCC7wn7F2dK-85cRg0iF8izVls`,
     };
+    this.unreadChannels = [];
+    this.messages = [];
   }
 
   logOut = (data) => {
@@ -147,6 +149,14 @@ export class ChatService {
   setSelectedChannel = (channel) => this.selectedChannel = channel;
   getSelectedChannel = () => this.selectedChannel;
   getAllChannels = () => this.channels;
+  addToUnread = (unreadChat) => this.unreadChannels.push(unreadChat);
+
+  setUnreadChannels = (channel) => {
+    if (this.unreadChannels.includes(channel.id)) {
+      this.unreadChannels = this.unreadChannels.filter(ch => ch !== channel.id)
+    }
+    return this.unreadChannels;
+  }
 
   async findAllChannels() {
     const headers = this.headers;
@@ -230,11 +240,12 @@ export class SocketService {
   getChatMessage(cb) {
     this.socket.on('messageCreated', (messageBody, userId, channelId, userName, userAvatar, userAvatarColor, id, timeStamp) => {
       const channel = this.chatService.getSelectedChannel();
-      if (channelId === channel.id) {
-        const chat = { messageBody, userId, userName, userAvatar, userAvatarColor, id, timeStamp };
-        this.chatService.addMessage(chat);
-        cb();
+      const chat = { messageBody, userId, userName, userAvatar, userAvatarColor, id, timeStamp };
+      if (channelId !== channel.id && !this.chatService.unreadChannels.includes(channelId)) {
+        this.chatService.addToUnread(channelId);
       }
+      this.chatService.messages = [...this.chatService.messages, chat];
+      cb(chat, this.chatService.messages);
     })
   }
 
@@ -251,5 +262,4 @@ export class SocketService {
       cb(typingUsers);
     });
   }
-
 }
