@@ -130,30 +130,29 @@ export class AuthService extends User {
 
 export class ChatService {
   constructor(authHeader) {
-    this.getAuthHeader = authHeader;
+    // this.getAuthHeader = authHeader;
     this.channels = [];
     this.selectedChannel = {};
-    // this.headers = {};
+    this.headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZDkzNDM1ZDVlYjMyOTA1ZTM3N2Y2MCIsImlhdCI6MTY0MTkxNzU5MiwiZXhwIjoxNjQ5NjkzNTkyfQ.aXd_nvSyu9bamBDhxSCC7wn7F2dK-85cRg0iF8izVls`,
+    };
   }
-  //
-  // logOutHeaders = () => {
-  //   this.headers = this.getAuthHeader;
-  // }
 
+  logOut = (data) => {
+    console.log(data)
+  }
   addChannel = (channel) => this.channels.push(channel);
+  addMessage = (chat) => this.messages.push(chat);
   setSelectedChannel = (channel) => this.selectedChannel = channel;
+  getSelectedChannel = () => this.selectedChannel;
   getAllChannels = () => this.channels;
 
   async findAllChannels() {
-    //const headers = this.getAuthHeader();
+    const headers = this.headers;
     try {
-      let response = await axios.get(URL_GET_CHANNELS, {
-        // headers
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZDkzNDM1ZDVlYjMyOTA1ZTM3N2Y2MCIsImlhdCI6MTY0MTkxNzU5MiwiZXhwIjoxNjQ5NjkzNTkyfQ.aXd_nvSyu9bamBDhxSCC7wn7F2dK-85cRg0iF8izVls`,
-        }
-      });
+      let response = await axios.get(URL_GET_CHANNELS, { headers });
+      this.logOut(headers);
       response = response.data.map((channel) => ({
         name: channel.name,
         description: channel.description,
@@ -162,14 +161,14 @@ export class ChatService {
       this.channels = [...response];
       return response;
     } catch (e) {
-      // this.logOutHeaders();
+      this.logOut(headers);
       console.error(e);
       throw e;
     }
   }
 
-  async findAllMessagesForChannel (channelId, headers ) {
-    //const headers = this.getAuthHeader();
+  async findAllMessagesForChannel (channelId) {
+    const headers = this.headers;
     try {
       let response = await axios.get(URL_GET_MESSAGES + channelId, { headers });
       response = response.data.map((msg) => ({
@@ -194,9 +193,11 @@ export class ChatService {
 
 export class SocketService {
   socket = io('http://localhost:3005/')
-  constructor(socketAddChannel, getChannelList) {
-    this.socketAddChannel = socketAddChannel;
-    this.getChannelList = getChannelList;
+  constructor(ssAddChannel, ssGetChannels, ssAddMessage, ssGetSelectedChannel) {
+    this.ssAddChannel = ssAddChannel;
+    this.ssGetChannels = ssGetChannels;
+    this.ssAddMessage = ssAddMessage;
+    this.ssGetSelectedChannel = ssGetSelectedChannel;
   }
 
   establishConnection() {
@@ -216,8 +217,8 @@ export class SocketService {
   getChannel(cb) {
     this.socket.on('channelCreated', (name, description, id) => {
       const channel = { name, description, id };
-      this.socketAddChannel(channel);
-      const channelList = this.getChannelList();
+      this.ssAddChannel(channel);
+      const channelList = this.ssGetChannels();
       cb(channelList);
     })
   }
@@ -227,6 +228,31 @@ export class SocketService {
     if (!!messageBody && !!channelId && !!user) {
       this.socket.emit('newMessage', messageBody, userId, channelId, userName, userAvatar, userAvatarColor);
     }
+  }
+
+  getChatMessage(cb) {
+    this.socket.on('messageCreated', (messageBody, userId, channelId, userName, userAvatar, userAvatarColor, id, timeStamp) => {
+      const channel = this.ssGetSelectedChannel();
+      if (channelId === channel.id) {
+        const chat = { messageBody, userId, userName, userAvatar, userAvatarColor, id, timeStamp };
+        this.ssAddMessage(chat);
+        cb();
+      }
+    })
+  }
+
+  startTyping(userName, channelId) {
+    this.socket.emit('startType', userName, channelId);
+  }
+
+  stopTyping(userName) {
+    this.socket.emit('startType', userName);
+  }
+
+  getUserTyping(cb) {
+    this.socket.on('userTypingUpdate', (typingUsers) => {
+      cb(typingUsers);
+    });
   }
 
 }
